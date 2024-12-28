@@ -1,0 +1,89 @@
+<html lang="en">
+   <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="stylesheet" href="/static/phonebook/style.css" />
+      <title>Phonebook</title>
+      <h2>Welcome, {{ user.username }}'s Phonebook</h2>
+   </head>
+   <body>
+      <!-- Navigation Bar -->
+      <nav class="navbar navbar-default">
+         <div class="container-fluid">
+            <div class="navbar-header">
+               <a class="navbar-brand" href="/">Phonebook</a>
+            </div>
+            <div class="navbar-right">
+               {% if user.is_authenticated %}
+               <a href="{% url 'logout' %}" class="btn btn-secondary">Logout</a>
+               {% endif %}
+            </div>
+         </div>
+      </nav>
+
+      <!-- Flash Messages -->
+      {% if messages %}
+      <ul>
+         {% for message in messages %}
+         <li>{{ message }}</li>
+         {% endfor %}
+      </ul>
+      {% endif %}
+
+      <!-- Search Bar -->
+      <form method="GET" action="{% url 'landing-page' %}">
+         <input type="text" name="search" placeholder="Search contacts..." value="{{ search_query }}" />
+         <button type="submit" class="btn btn-primary">Search</button>
+      </form>
+
+      <!-- Contacts Table -->
+      <div class="container">
+         <legend>All Contacts</legend>
+         <table class="table">
+            <thead>
+               <tr>
+                  <th scope="col">Name</th>
+                  <th scope="col">Number</th>
+                  <th scope="col">Actions</th>
+               </tr>
+            </thead>
+            <tbody>
+               {% for contact in contacts %}
+               <tr>
+                  <td>{{ contact.name }}</td>
+                  <td>{{ contact.number }}</td>
+                  <td>
+                     <!-- Edit Button -->
+                     <a href="{% url 'edit-contact' contact.id %}" class="btn btn-warning">Edit</a>
+                     <!-- Delete Button -->
+                     <form action="{% url 'delete-contact' contact.id %}" method="POST" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                     </form>
+                  </td>
+               </tr>
+               {% endfor %}
+            </tbody>
+         </table>
+
+         <!-- Add Contact Form -->
+         <form class="form-horizontal" action="{% url 'new-contact' %}" method="POST">
+            {% csrf_token %}
+            <fieldset>
+               <legend>New Contact</legend>
+               <div class="form-group">
+                  <label for="name" class="control-label">Name</label>
+                  <input type="text" name="name" class="form-control" id="name" required />
+               </div>
+               <div class="form-group">
+                  <label for="number" class="control-label">Number</label>
+                  <input type="number" name="number" class="form-control" id="number" required />
+               </div>
+               <div class="form-group">
+                  <button type="submit" class="btn btn-primary">Add</button>
+               </div>
+            </fieldset>
+         </form>
+      </div>
+   </body>
+</html>
