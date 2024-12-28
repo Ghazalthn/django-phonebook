@@ -6768,3 +6768,16 @@ button.close {
     color: #fff;
   }
 }
+
+.navbar .logout-btn {
+    color: white !important; /* Ensure the text is visible */
+    background-color: transparent; /* Adjust as per your theme */
+    border: none; /* Optional: remove button borders */
+    font-weight: bold; /* Make it stand out */
+    opacity: 1; /* Ensure full visibility */
+}
+
+.navbar .logout-btn:hover {
+    color: white; /* Ensure visibility on hover */
+    text-decoration: underline; /* Optional: add underline effect */
+}
