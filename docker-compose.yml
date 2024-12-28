@@ -1,0 +1,11 @@
+version: "3.9"
+
+services:
+  web:
+    build: .
+    ports:
+      - "8002:8002" # Map the container's port 8002 to the host's port 8002
+    volumes:
+      - .:/app       # Sync the local project folder with the container
+    environment:
+      DEBUG: "True"  # Set the DEBUG environment variable
